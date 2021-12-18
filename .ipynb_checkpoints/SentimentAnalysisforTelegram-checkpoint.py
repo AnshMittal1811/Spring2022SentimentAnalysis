@@ -103,7 +103,10 @@ def spelling_corrections(dataframe):
     def spell_check(message, correct_words):
         new_message = ""
         for word in message.split(" "):
-            if word.isalpha() and (word not in correct_words) and (word.lower() not in ["doge", "dogecoin", "shibe", "shiba", "shib", "shiba inu"]):
+            if (word.isalpha() 
+                    and (word not in correct_words) 
+                    and (word.lower() not in ["doge", "dogecoin", "shibe", "shiba", 
+                                              "shib", "shiba inu"])):
                 temp = [(edit_distance(word, w),w) for w in correct_words if w[0]==word[0]]
                 new_message = new_message + sorted(temp, key = lambda val:val[0])[0][1] + " "
             else:
@@ -113,11 +116,12 @@ def spelling_corrections(dataframe):
     tqdm.pandas()
     print("Performing Spelling Corrections...")
     
-    slangs = ["doge", "dogecoin", "dogecoins", "shib", "shiba", "shiba inu", "shibe inu", 
-          "dollar", "dolar", "$", "ps", "p.s.", "app", "money", "tarde", "telegram", "whatsapp", 
-          "buy", "issue", "crypto", "usdc", "bank", "account", "portfolio", "Elon", "Musk", "shibaa",
-          "profit", "cro", "€", "inr", "mill", "cdc", "tbh", "hi", "hey", "plz", "wbu", "%",
-          "crypto.com", "email", "usdt", "cent", "ct", "mil", "ppl", "btc", "curr"]
+    slangs = ["doge", "dogecoin", "dogecoins", "shib", "shiba", "shiba inu", "shibe inu",
+              "dollar", "dolar", "$", "ps", "p.s.", "app", "money", "tarde", "telegram",
+              "whatsapp", "buy", "issue", "crypto", "usdc", "bank", "account", "portfolio",
+              "Elon", "Musk", "shibaa", "profit", "cro", "€", "inr", "mill", "cdc", "tbh", 
+              "hi", "hey", "plz", "wbu", "%", "crypto.com", "email", "usdt", "cent", "ct", 
+              "mil", "ppl", "btc", "curr"]
 
     a = [w for w in wordnet.all_lemma_names()]
     a = list(set(a).union(set(slangs)))
@@ -129,7 +133,8 @@ def removing_non_english(dataframe):
     def word_in_english(message, correct_words): 
         st = []
         for word in message.split(" "): 
-            if wordnet.synsets(word) or word.lower() in correct_words:
+            if (wordnet.synsets(word)
+                    or word.lower() in correct_words):
                 st.append(1)
             else: 
                 st.append(0)
@@ -143,11 +148,12 @@ def removing_non_english(dataframe):
         
     tqdm.pandas()
     print("Checking English Messages...")
-    slangs = ["doge", "dogecoin", "dogecoins", "shib", "shiba", "shiba inu", "shibe inu", 
-              "dollar", "dolar", "$", "ps", "p.s.", "app", "money", "tarde", "telegram", "whatsapp", 
-              "buy", "issue", "crypto", "usdc", "bank", "account", "portfolio", "Elon", "Musk", "shibaa",
-              "profit", "cro", "€", "inr", "mill", "cdc", "tbh", "hi", "hey", "plz", "wbu", "%",
-              "crypto.com", "email", "usdt", "cent", "ct", "mil", "ppl", "btc", "curr"]
+    slangs = ["doge", "dogecoin", "dogecoins", "shib", "shiba", "shiba inu", "shibe inu",
+              "dollar", "dolar", "$", "ps", "p.s.", "app", "money", "tarde", "telegram",
+              "whatsapp", "buy", "issue", "crypto", "usdc", "bank", "account", "portfolio",
+              "Elon", "Musk", "shibaa", "profit", "cro", "€", "inr", "mill", "cdc", "tbh", 
+              "hi", "hey", "plz", "wbu", "%", "crypto.com", "email", "usdt", "cent", "ct", 
+              "mil", "ppl", "btc", "curr"]
     
     correct_words = list(set(words.words()).union(set(slangs)))    
     dataframe["Messages"] = dataframe["Messages"].progress_apply(lambda txt: word_in_english(txt, correct_words))
@@ -188,13 +194,15 @@ def lemmatization(dataframe):
 
 
 def main(): 
-    
+    # Opening Telegram JSON file
     messages = open('./Data/result.json', 'r', encoding='utf8')
     data = json.load(messages)
-
+    # Extracting Dataset
     messages = dataset_extraction(data)
     df = convert_data_to_df(messages)
-    
+    # Preprocessing Data (Removing non-English sentences here, 
+    # Removing words not having SHIB, or DOGE), Performing spell-check here
+    # Demojizing texts, Stop Words Removal, Lemmatizing, etc. 
     df_pre = preprocessing(df)
     
 if __name__ == "__main__": 
