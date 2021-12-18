@@ -83,7 +83,19 @@ The requirements for this project were as follows.
 ## Sentiment Classification (using NLTK)
 
 ## Summary of Result
+These are the results obtained after running the preprocessing pipeline and Sentiment Analysis model (from NLTK) on the preprocessed data. Figure 1 represents the total number os messages per day from May 1st to May 15th on a bar graph
 
+![Figure 1](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_1.png)
+
+Figure 2 represents the distribution of different sentiment over the messages (only english) throughout the duration from May 1st to May 15th on a stack bar plot. 
+
+![Figure 2](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_2.png)
+
+Figure 3 represents the average sentiment calculated over the messages  (only english) throughout the duration from May 1st to May 15th on a bar plot where the height of the bar is the total number of messages on that day. 
+
+![Figure 3](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_3.png)
+
+ 
 ## Further Scope
 
 
