@@ -34,28 +34,27 @@ This will create a folder called **Spring2022SentimentAnalysis** on your machine
 #### Folder structure
 
 The folder structure for the scripts is the same as in the GitHub repository. The structure diagram is given below: 
-     
-     --- Data
-         -- result.json
-	       -- contacts
-		       -- contact_4.vcard
-	   --- Images
-         -- Fig_1.png
-         -- Fig_1_before_non_english.png
-         -- Fig_2.png
-         -- Fig_2_before_non_english.png
-         -- Fig_3.png
-         
-       -- AdvancedTrainingSentimentAnalysisModels.ipynb
-       -- environment_ind.yml
-       -- environment.yml
-       -- GraphPlotting.ipynb
-       -- Preprocessed_data.csv
-       -- Preprocessing+Predictions.ipynb
-       -- README.md
-       -- requirements.txt
-       -- SentimentAnalysisforTelegram.py
-
+    .
+    ├── ...
+    ├── Data                    		# Contains used for NLP task
+    │   ├── result.json         		# Main file for the data
+    │   ├── contacts            		# Contact Information extracted from telegram
+    │   	├──  contact_4.vcard 
+    │── Images            			# Images Folder
+    │   ├── Fig_1.png         			# Total no of english messages from May 1 to 15
+    │   ├── Fig_1_before_non_english.png 	# Total no of english messages from May 1 to 15 (inc non English)
+    │   ├── Fig_2.png         			# Sentiments from May 1 to 15
+    │   ├── Fig_2_before_non_english.png        # Sentiments from May 1 to 15 (inc non-English)
+    │   ├── Fig_3.png         			# Average Sentiments from May 1 to 15
+    ├── AdvancedTrainingSentimentAnalysisModels.ipynb
+    ├── environment_ind.yml
+    ├── environment.yml
+    ├── GraphPlotting.ipynb
+    ├── Preprocessed_data.csv
+    ├── Preprocessing+Predictions.ipynb
+    ├── README.md
+    ├── requirements.txt
+    └── SentimentAnalysisforTelegram.py
 
 
 ## Introduction 
