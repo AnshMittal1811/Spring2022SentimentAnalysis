@@ -11,8 +11,7 @@ This README will cover the following steps of our own data pipeline.
   * Requirements and Environment
   * Introduction
   * Data Extraction
-  * Data Cleaning
-  * Data Preprocessing
+  * Data Preprocessing and Cleaning
   * Sentiment Classification (using NLTK)
   * Making Predictions
   * Summary of Result
@@ -76,9 +75,8 @@ The requirements for this project were as follows.
 
 ## Data Extraction
 
-## Data Cleaning
+## Data Preprocessing and Cleaning
 
-## Data Preprocessing
 
 ## Sentiment Classification (using NLTK)
 
