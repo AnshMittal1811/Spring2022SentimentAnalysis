@@ -212,6 +212,26 @@ def make_simple_predictions(dataframe):
     dataframe['Sentiment'] = dataframe['Messages'].progress_apply(lambda txt: predict(txt))
     return dataframe
 
+def average_sentiment(dataframe): 
+    def cal_sentiment(day):
+        val = (1.0*day['positive'] + (-1.0)*day['negative'])/day['Total Messages']
+        thresh = 0.1
+        if val > thresh: 
+            return "positive"
+        elif val < -thresh:
+            return "negative"
+        else: 
+            return "neutral"
+        
+    def total_messages(day): 
+        return day['negative'] + day['neutral'] + day['positive']
+    
+    tqdm.pandas()
+    print("Calculating Average Sentiment...")
+    dataframe['Total Messages'] = dataframe.progress_apply(total_messages, axis=1)
+    dataframe['Average_sent'] = dataframe.progress_apply(cal_sentiment, axis=1)
+    return dataframe
+
 def graph_1(dataframe):
     fig = px.bar(dataframe, x='Date', y='Total Messages', color='Total Messages')
     fig.show()
@@ -224,6 +244,14 @@ def graph_2(dataframe):
     fig.show()
     fig.write_image("Images/Fig_2.png")
 
+def final_graph(dataframe): 
+    fig = fig2 = px.bar(final_df, x='Date', 
+                        y='Total Messages', color = 'Average_sent',
+                        title = 'Average Sentiment (Cryptocoin) over time')
+
+    fig.show()
+    fig.write_image("Images/Fig_3.png")
+    
 def main(): 
     # Opening Telegram JSON file
     messages = open('./Data/result.json', 'r', encoding='utf8')
@@ -250,6 +278,11 @@ def main():
     mod_df_1 = pd.pivot_table(mod_df, index = 'Date', columns='Sentiment', values='Total Sentiment').reset_index()
     mod_df_1 = mod_df_1.fillna(0)
     graph_2(mod_df_1)
+    
+    # Final Graph for Average Sentiment
+    final_df = average_sentiment(mod_df_1)
+    final_graph(final_df)
+    
     
 if __name__ == "__main__": 
     main()
