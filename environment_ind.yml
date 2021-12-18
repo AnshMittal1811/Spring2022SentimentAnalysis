@@ -1,0 +1,13 @@
+name: sentimentAnalysis
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pyahocorasick
+  - googletrans
+  - word2number
+  - numpy
+  - pandas
+  - plotly
+prefix: C:\Users\acer\Anaconda3\envs\sentimentAnalysis
