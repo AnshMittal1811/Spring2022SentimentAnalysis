@@ -1,16 +1,21 @@
 import json
-# import glob
 from tqdm import tqdm
 import numpy as np
 import unidecode
+import nltk
+nltk.download('vader_lexicon')
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet, stopwords, words
+from nltk.metrics.distance  import edit_distance
+from nltk.sentiment import SentimentIntensityAnalyzer
 import re
 import contractions
 from bs4 import BeautifulSoup
 import pandas as pd
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import wordnet, stopwords, words
-from nltk.metrics.distance import edit_distance
 import emoji
+import plotly.express as px
+import plotly.offline as pyo
+import plotly.graph_objs as go
 
 def dataset_extraction(data):
     df = []
@@ -192,18 +197,59 @@ def lemmatization(dataframe):
     dataframe['Messages']= dataframe['Messages'].progress_apply(lambda txt: lemmatize(txt))
     return dataframe
 
+def make_simple_predictions(dataframe):
+    def predict(messages): 
+        sia = SentimentIntensityAnalyzer()
+        if (sia.polarity_scores(messages)['compound'] > 0.25): 
+            return "positive"
+        elif (sia.polarity_scores(messages)['compound'] < -0.25):
+            return "negative"
+        else:
+            return "neutral"
+        
+    tqdm.pandas()
+    print("Predicting Sentiments in the Text...")
+    dataframe['Sentiment'] = dataframe['Messages'].progress_apply(lambda txt: predict(txt))
+    return dataframe
+
+def graph_1(dataframe):
+    fig = px.bar(dataframe, x='Date', y='Total Messages', color='Total Messages')
+    fig.show()
+    fig.write_image("Images/Fig_1")
+    
+def graph_2(dataframe):
+    fig = px.bar(dataframe, x = 'Date', y = ['neutral','negative','positive'],
+                 color_discrete_sequence=px.colors.qualitative.D3,
+                 title="Sentiment-based for Telegram Cryptocoin")
+    fig.show()
+    fig.write_image("Images/Fig_2.png")
 
 def main(): 
     # Opening Telegram JSON file
     messages = open('./Data/result.json', 'r', encoding='utf8')
     data = json.load(messages)
+    
     # Extracting Dataset
     messages = dataset_extraction(data)
+    
     df = convert_data_to_df(messages)
     # Preprocessing Data (Removing non-English sentences here, 
     # Removing words not having SHIB, or DOGE), Performing spell-check here
     # Demojizing texts, Stop Words Removal, Lemmatizing, etc. 
     df_pre = preprocessing(df)
+    
+    # For Graph 1
+    modified_df = df_pre.groupby(['Date']).size().to_frame('Total Messages').reset_index()
+    graph_1(modified_df)
+    
+    # Making Predictions
+    mod_df = make_simple_predictions(df)
+    
+    # For Graph 2
+    mod_df = df.groupby(['Date', 'Sentiment']).size().to_frame('Total Sentiment').reset_index()
+    mod_df_1 = pd.pivot_table(mod_df, index = 'Date', columns='Sentiment', values='Total Sentiment').reset_index()
+    mod_df_1 = mod_df_1.fillna(0)
+    graph_2(mod_df_1)
     
 if __name__ == "__main__": 
     main()
