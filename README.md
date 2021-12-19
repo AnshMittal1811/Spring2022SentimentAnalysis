@@ -75,7 +75,17 @@ The requirements for this project were as follows.
 
 ## Data Extraction
 
+Data was extracted from the telegram desktop app and it gave a ```.json``` file after 24 hours as it was the required waiting time for the data to get downloaded from the Telegram Desktop App. First, the json file was opened and loaded using the ```json``` package of python. This has been depicted below.
+
+```python
+   messages = open('./Data/result.json', 'r', encoding='utf8')
+   data = json.load(messages) 
+```
+
+Then, the data was extracted from the JSON dictionary according to 2 keys (i.e. ```Date``` and ```Text```) using the ```dataset_extraction()``` method.
+
 ## Data Preprocessing and Cleaning
+The data preprocessing and data cleaning
 
 
 ## Sentiment Classification (using NLTK)
