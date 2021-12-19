@@ -85,8 +85,17 @@ Data was extracted from the telegram desktop app and it gave a ```.json``` file 
 Then, the data was extracted from the JSON dictionary according to 2 keys (i.e. ```Date``` and ```Text```) using the ```dataset_extraction()``` method.
 
 ## Data Preprocessing and Cleaning
-The data preprocessing and data cleaning
-
+The data preprocessing and data cleaning was divided into several phases mentioned below.
+ * Demojizing the text
+ * Converting accented characters
+ * Removing Case Sensitivity
+ * Removing HTMLs and URLs
+ * Removing Extra Spaces between words
+ * Expansion of Contractions in words
+ * Removing Stop words
+ * Lemmatizing the words present
+ * Removing non-English words
+ * Spelling Corrections (using Levenshtein Distance)
 
 ## Sentiment Classification (using NLTK)
 
