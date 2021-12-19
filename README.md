@@ -38,7 +38,7 @@ This README will cover the following steps of our own data pipeline.
 First clone the repository onto your local machine. The command to do this is given below: 
 
 ```shell
-   git clone https://github.com/sociometrik/planet-rep.git 
+   git clone https://github.com/AnshMittal1811/Spring2022SentimentAnalysis.git 
 ```
 
 This will create a folder called **Spring2022SentimentAnalysis** on your machine with the Jupyter notebook scripts and other python files and graphs along with dataframe that was used for the work here.
