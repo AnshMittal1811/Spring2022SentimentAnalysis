@@ -16,7 +16,7 @@ Or you can create the environment for this repository using the ```YML config```
   conda env create -f environment.yml
 ```
 
-This repository contains a brief summary of the assignment where the The specific task was to collect a dataset and perform an analysis on it. To build this application, we wee supposed to crawl Telegram messages, filter non-English messages, and compute the average sentiment over time.
+This repository contains a brief summary of the assignment where the The specific task was to collect a dataset and perform an analysis on it. To build this application, we were supposed to crawl Telegram messages, filter non-English messages, and compute the average sentiment over time.
 
 This README will cover the following steps of our own data pipeline. 
   
