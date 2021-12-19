@@ -97,6 +97,17 @@ The data preprocessing and data cleaning was divided into several phases mention
  * Removing non-English words
  * Spelling Corrections (using Levenshtein Distance)
 
+### Demojizing the text
+### Converting accented characters
+### Removing Case Sensitivity
+### Removing HTMLs and URLs
+### Removing Extra Spaces between words
+### Expansion of Contractions in words
+### Removing Stop words
+### Lemmatizing the words present
+### Removing non-English words
+### Spelling Corrections (using Levenshtein Distance)
+
 ## Sentiment Classification (using NLTK)
 
 ## Summary of Result
