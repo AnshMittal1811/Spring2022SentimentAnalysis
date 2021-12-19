@@ -98,11 +98,53 @@ The data preprocessing and data cleaning was divided into several phases mention
  * Spelling Corrections (using Levenshtein Distance)
 
 ### Demojizing the text
+Since this text was based on telegram messages, there were several words which could have been included in non-English words and hence lead us to misconception that there were actually more number of words, and hence messages which weren't from the English language. And to resolve this, we used the following function from the library.
+
+```python
+  import emoji
+  emoji.demojize(txt)
+```
+
 ### Converting accented characters
+There are several words like **Café** which can result in our language being considered as non-English (for e.g., German, or French). Hence, we convert the accented characters which lead to such misunderstandings using the following.
+
+```python
+  import unidecode
+  unidecode.unidecode(txt)
+```
+
 ### Removing Case Sensitivity
+Case Sensitivity is one of the issues that can rise when we try to recognize the words from pre-build corpus. This can be resolved very easily as has been given below.
+
+```python
+  dataframe['col1'] = dataframe['col1'].apply(lambda txt: str(txt).lower())
+```
+
 ### Removing HTMLs and URLs
+We further remove HTMLs and URLs to make our messages text more easier for the algorithm to decide if it falls under the `English' language. This has been done as follows. 
+
+```python
+    from bs4 import BeautifulSoup
+    dataframe['col1'] = dataframe['col1'].apply(lambda txt: re.sub(r"http\S+", "", txt))
+    dataframe['col1'] = dataframe['col1'].apply(lambda txt: BeautifulSoup(txt, 'lxml').get_text())
+```
+
 ### Removing Extra Spaces between words
+We remove extra spaces coming in the words, so, that it doesn't lead to any inconsistencies while trying to predict sentiments and removing the messages from English language. This has been done as follows. 
+
+```python
+    import re
+    dataframe['col1'] = dataframe['col1'].apply(lambda txt: re.sub(" +"," ", txt))
+```
+
 ### Expansion of Contractions in words
+We expand the words such as  ```I'll``` to ```I will```. This is again done to compare the words easily to our corpus of words in NLTK. The following represents the method of doing the same in our pipeline. 
+
+```python
+    import contractions
+    dataframe['col1'] = dataframe['col1'].apply(lambda txt: contractions.fix(txt))
+```
+
 ### Removing Stop words
 ### Lemmatizing the words present
 ### Removing non-English words
