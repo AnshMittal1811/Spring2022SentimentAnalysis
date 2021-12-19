@@ -2,7 +2,19 @@
 
 This is a brief summary of the work done for this assignment. To create the environment for running this program please type in the following in your command prompt: 
 
-''''''
+```shell
+# using pip
+pip install -r requirements.txt
+
+# using Conda
+conda create --name <env_name> --file requirements.txt
+```
+
+Or you can create the environment for this repository using the ```YML config``` file for the environment on anaconda prompt. This can be done as follows. 
+
+```shell
+  conda env create -f environment.yml
+```
 
 This repository contains a brief summary of the assignment where the The specific task was to collect a dataset and perform an analysis on it. To build this application, we wee supposed to crawl Telegram messages, filter non-English messages, and compute the average sentiment over time.
 
@@ -94,7 +106,7 @@ The data preprocessing and data cleaning was divided into several phases mention
  * Expansion of Contractions in words
  * Removing Stop words
  * Lemmatizing the words present
- * Removing non-English words
+ * Removing non-English messages
  * Spelling Corrections (using Levenshtein Distance)
 
 ### Demojizing the text
@@ -146,11 +158,67 @@ We expand the words such as  ```I'll``` to ```I will```. This is again done to c
 ```
 
 ### Removing Stop words
+We remove certain stop words but some of the stop words have been excluded from teh list of stop words that NLTK provides us with. This has been depicted in the code snippet below. 
+
+```python
+  from nltk.corpus import stopwords
+
+  def Remove_Stopwords(message, stop_words_list):
+    tokens = message.split(" ")
+    clean_message = [word for word in tokens if not word in stop_words_list]
+    return [(" ").join(clean_message)]
+
+  deselect_stop_words = ['not', 'nor', 'no', 'against', 'don', "don't", 
+        'should', "should've", 'aren', "aren't", 'couldn', 
+        "couldn't", 'didn', "didn't", 'doesn', "doesn't", 
+        'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 
+        'isn', "isn't", 'mightn', "mightn't", 'mustn', "mustn't", 
+        'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 
+        'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 
+        'wouldn', "wouldn't"]
+
+  stop_words_list = set([stopwords.words('english').remove(word) for word in deselect_stop_words])
+  dataframe['col1'] = dataframe['col1'].apply(lambda txt: Remove_Stopwords(txt, stop_words_list))
+```
+
 ### Lemmatizing the words present
-### Removing non-English words
+Finally, we lemmatize the words so that we can get a good match in the corpus from ```NLTK```. This is one of the most impotant steps as there might be some forms of words that are there in the ```wordnet.all_lemma_names()``` or ```words.words()``` in ```NLTK``` but there equivalent forms in  the sentences aren't there in the corpus. An instance of this can be the word `inestment' which was there in our corpus but not in these word lists and hence it was getting removed repeatedly. The following code snippet takes care of lemmatizing the corpus. 
+
+```python
+  def lemmatize(message):
+    word_lemma = WordNetLemmatizer()
+    lemmatize_word = [word_lemma.lemmatize(word) for word in message]
+    return (" ").join(lemmatize_word)
+
+  tqdm.pandas()
+  print("Lemmatizing Words in Messages...")
+  dataframe['Messages']= dataframe['Messages'].progress_apply(lambda txt: lemmatize(txt))
+```
+
+### Removing non-English messages
+Now, this is one of the vital part of the pipeline where we were supposed to remove all those sentences that were not there in the english language. We specifically did this step after extracting messages such as ```DOGE``` or ```SHIB``` from our corpus. This step has been done by using the function ```wordnet.synsets()``` and checking if the word lies in the ```words.words()``` and an extension of finance related words list. If majority of the words aren't present in the list, then the sentence is considered non-English and dropped. The majority is taken as there can be words which were misspelled while typing the messages on telegram.
+
 ### Spelling Corrections (using Levenshtein Distance)
+After removing all non-English messages from our dataframe, we start correcting the grammatical mistakes made while writing messages word-by-word. This is done using levenshtein-distance and not Jaccard distance with N-grams (as there can be sentences where Intersection over union in J-distance gives us divide-by-zero error which had been encountered multiple times). The following code-snippet depicts the grammatical corrections made. 
+
+```python
+  def spell_check(message, correct_words):
+    new_message = ""
+    for word in message.split(" "):
+      if word.isalpha() and (word not in correct_words) and (word.lower() not in ["doge", "dogecoin", "shibe", "shiba", "shib", "shiba inu"]):
+        temp = [(edit_distance(word, w),w) for w in correct_words if w[0]==word[0]]
+        new_message = new_message + sorted(temp, key = lambda val:val[0])[0][1] + " "
+      else:
+        new_message =  new_message + word + " "
+    return new_message
+```
 
 ## Sentiment Classification (using NLTK)
+For the sentiment classification, we were trying to take two different approaches which have been mentioned as follows. 
+1. Using ```NLTK``` pretrained ```SentimentIntensityAnalyzer()```
+2. Using ```Machine Learning``` Models
+3. Using ```BERT``` and ```Transformer-based``` models
+The results depicted right now are those based on the 1st part and have been summarized as follows.
 
 ## Summary of Result
 These are the results obtained after running the preprocessing pipeline and Sentiment Analysis model (from NLTK) on the preprocessed data. Figure 1 represents the total number os messages per day from May 1st to May 15th on a bar graph
@@ -167,5 +235,5 @@ Figure 3 represents the average sentiment calculated over the messages  (only en
 
  
 ## Further Scope
-
+Obtaining the results from 2 and 3.
 
