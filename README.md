@@ -85,11 +85,11 @@ These are the results obtained after running the preprocessing pipeline and Sent
 
 ![Figure 1](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_1.png)
 
-Figure 2 represents the distribution of different sentiment over the messages (only english) throughout the duration from May 1st to May 15th on a stack bar plot. 
+Figure 2 represents the distribution of different sentiment over the messages (only english) throughout the duration from May 1st to May 15th on a stack bar plot. Here, the value for the threshold was taken 0.2 for the ```compound``` key of the dictional obtained from ```SentimentIntensityAnalyser().polarity_scores()``` and hence obtained the following graph.
 
 ![Figure 2](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_2.png)
 
-Figure 3 represents the average sentiment calculated over the messages  (only english) throughout the duration from May 1st to May 15th on a bar plot where the height of the bar is the total number of messages on that day. 
+Figure 3 represents the average sentiment calculated over the messages  (only english) throughout the duration from May 1st to May 15th on a bar plot where the height of the bar is the total number of messages on that day. Here, the threshold for the positive sentiment was taken to be 0.15 and for the negative sentiment it was taken as -0.15. Any values that were lying between these 2 ranges were taken to be Neutral and hence obtained the following graph.
 
 ![Figure 3](https://github.com/AnshMittal1811/Spring2022SentimentAnalysis/blob/master/Images/Fig_3.png)
 
