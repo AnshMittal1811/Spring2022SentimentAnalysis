@@ -47,7 +47,6 @@ This will create a folder called **Spring2022SentimentAnalysis** on your machine
 
 The folder structure for the scripts is the same as in the GitHub repository. The structure diagram is given below: 
 
-
     .
     ├── ...
     ├── Data                    		            # Contains used for NLP task
@@ -212,7 +211,6 @@ After removing all non-English messages from our dataframe, we start correcting 
         new_message =  new_message + word + " "
     return new_message
 ```
-
 ## Sentiment Classification (using NLTK)
 For the sentiment classification, we were trying to take two different approaches which have been mentioned as follows. 
 1. Using ```NLTK``` pretrained ```SentimentIntensityAnalyzer()```
